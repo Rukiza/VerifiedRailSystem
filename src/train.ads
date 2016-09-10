@@ -1,5 +1,7 @@
 with Id_Handler;
+use Id_Handler;
 with Station;
+use Station;
 
 package Train
 with SPARK_Mode => On
@@ -12,5 +14,6 @@ type Train_Record is
          Destination: Station_Record;
       end record;
 
+   function Init_Train_Record return Train_Record;
 
 end Train;
