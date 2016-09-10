@@ -52,7 +52,10 @@ is
                      xor
                        i = j)));
 
-   function Connect () return
+   procedure Connect (r: in out Railway_Record;
+                      s1: in Station.Station_Record;
+                      s2: in Station.Station_Record);
+
 
    --INISILIZATION
 
