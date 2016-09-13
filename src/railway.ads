@@ -1,6 +1,6 @@
-with Track;
-with Station;
-with Train;
+with Track; use Track;
+with Station; use Station;
+with Train; use Train;
 with Id_Handler; use Id_Handler;
 with Ada.Containers.Vectors; use Ada.Containers;
 with Tracks_Array;
@@ -10,6 +10,8 @@ with Train_Array;
 package Railway
 --with SPARK_Mode => On
 is
+
+
 
    Defualt_Station: Station.Station_Record := (Station_ID => ID'Last);
    Defualt_Path_Array: Train.Path_Array := (ID'Last,
@@ -63,11 +65,15 @@ is
                        STA: Station_A;
                        Node: Station.Station_Record) return Boolean
      with SPARK_Mode,
-     Depends => (Connected'Result => (TKA, STA, Node, Defualt_Station)),
-     Post => (if Connected'Result then
-                (for all i in STA'Range =>
-                     (for all j in STA'Range =>
-                          ())));
+     Depends => (Connected'Result => (TKA, STA, Node, Defualt_Station));--,
+     --Post => (if Connected'Result then
+     --           (for all i in STA'Range =>
+     --             (for some j in G_Marked'Range =>
+     --                  STA(i) = G_Marked(j) and G_Marked(j) /= Defualt_Station)));
+                --(for some i in STA'Range =>
+                     --(for some j in TKA'Range =>
+                          --(TKA(j).Destination = STA(i) and
+                                 --TKA(j).Origin = Node))));
 
    procedure Tick (r: in out Railway_Array_Record)
      with
@@ -99,7 +105,7 @@ is
                       Station_Array.Length(Init'Result.STA) = 0 and
                       Train_Array.Length(Init'Result.TNA) = 0);
 
-   function Init (r: in Railway_Record) return Railway_Array_Record;
+   function Init_Record (r: in Railway_Record) return Railway_Array_Record;
 
    function Init_Track_Array return Tracks_Array.Vector;
 

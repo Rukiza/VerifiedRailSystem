@@ -1,7 +1,7 @@
 with Track; use Track;
 with Station; use Station;
 WITH Train; use Train;
-
+with Ada.Text_IO; use Ada.Text_IO;
 package body Railway
 --with SPARK_Mode => On
 is
@@ -12,8 +12,10 @@ is
    begin
       for N of r.STA loop
          if not Connected(r.TKA, r.STA, N) then
+
             return False;
          end if;
+         --Put_Line("");
          pragma Assert (Connected(r.TKA, r.STA, N));
       end loop;
       if (for all i in r.TNA'Range =>
@@ -23,6 +25,7 @@ is
       end if;
       return False;
    end Verifiy;
+
 
    function Connected (TKA: Tracks_A;
                        STA: Station_A;
@@ -36,6 +39,7 @@ is
       M_P: Positive := 1;
       M_Size: Natural := 0;
       Temp: Station.Station_Record;
+      G_Marked: Station_A(1..STA'Length) with Ghost;
    begin
       if STA'Length > 0 then
          Marked(M_P) := Node; --(STA'Range)'Next()
@@ -52,11 +56,11 @@ is
            M_P in Marked'Range
          loop
             --pragma Assert (S_P = S_Size + 1);
-            Temp := Stack(S_P);
+            Temp := Stack(S_P-1); -- Needs to be this way.
             S_P := S_P - 1;
             S_Size := S_Size - 1;
-            --pragma Assert (S_P = S_Size + 1);
             for N of TKA loop
+               --Put_Line(N.Origin.Station_ID'IMAGE);
                if N.Origin = Temp and
                  (for all i in Marked'Range => Marked(i) /= N.Destination) and
                  S_Size < Natural'Last and S_P < Positive'Last and
@@ -64,6 +68,7 @@ is
                  S_P in Stack'Range and
                  M_P in Marked'Range
                then
+                  --Put_Line("Should be checking");
                   Stack(S_P) := N.Destination;
                   S_P := S_P + 1;
                   S_Size := S_Size + 1;
@@ -71,9 +76,12 @@ is
                   Marked(M_P) := N.Destination;
                   M_P := M_P + 1;
                   M_Size := M_Size + 1;
+                  --pragma Assert (N.Origin);
                end if;
             end loop;
          end loop;
+         G_Marked := Marked;
+         --Put_Line("Things should be connected");
          return (for all i in STA'Range =>
                    (for some j in Marked'Range =>
                       STA(i) = Marked(j) and Marked(j) /= Defualt_Station));
@@ -124,20 +132,21 @@ is
    is ((Init_Track_Array, Init_Station_Array, Init_Train_Array));
 
    --Converts the creation fromat to a provable format.
-   function Init (r: Railway_Record) return Railway_Array_Record is
-      TKA: Tracks_A( 1..Positive(Tracks_Array.Length(r.TKA)));
+   function Init_Record (r: Railway_Record) return Railway_Array_Record is
+      TKA: Tracks_A( 1..Standard.Integer(Tracks_Array.Length(r.TKA)));
       I_TKA: Positive := 1;
       C_TKA: Tracks_Array.Cursor;
-      STA: Station_A( 1..Positive(Station_Array.Length(r.STA)));
+      STA: Station_A( 1..Standard.Integer(Station_Array.Length(r.STA)));
       I_STA: Positive := 1;
       C_STA: Station_Array.Cursor;
-      TNA: Train_A(1..Positive(Train_Array.Length(r.TNA)));
+      TNA: Train_A(1..Standard.Integer(Train_Array.Length(r.TNA)));
       I_TNA: Positive := 1;
       C_TNA: Train_Array.Cursor;
    begin
       C_TKA := Tracks_Array.First(r.TKA);
       C_STA := Station_Array.First(r.STA);
       C_TNA := Train_Array.First(r.TNA);
+      Put_Line(Tracks_Array.Length(r.TKA)'Image);
 
       while Tracks_Array.Has_Element(C_TKA) and I_TKA in TKA'Range loop
          TKA(I_TKA) := Tracks_Array.Element(C_TKA);
@@ -156,9 +165,12 @@ is
          Train_Array.Next(C_TNA);
          I_TNA := I_TNA + 1;
       end loop;
-
+      --if TKA'Length /= 0 and STA'Length /= 0 and TNA'Length /= 0 then
       return (TKA'Length, STA'Length, TNA'Length, TKA, STA, TNA);
-   end Init;
+      --elsif
+
+      --end if
+   end Init_Record;
 
    function Init_Track_Array return Tracks_Array.Vector is
       r : Tracks_Array.Vector;
