@@ -65,17 +65,19 @@ is
                        STA: Station_A;
                        Node: Station.Station_Record) return Boolean
      with SPARK_Mode,
-     Depends => (Connected'Result => (TKA, STA, Node, Defualt_Station));--,
-     --Post => (if Connected'Result then
-     --           (for all i in STA'Range =>
-     --             (for some j in G_Marked'Range =>
-     --                  STA(i) = G_Marked(j) and G_Marked(j) /= Defualt_Station)));
-                --(for some i in STA'Range =>
-                     --(for some j in TKA'Range =>
-                          --(TKA(j).Destination = STA(i) and
-                                 --TKA(j).Origin = Node))));
+     Depends => (Connected'Result => (TKA, STA, Node, Defualt_Station)),
+     Post => (if Connected'Result then
+                (for some i in STA'Range =>
+                     (for some j in TKA'Range =>
+                          (TKA(j).Destination = STA(i) and
+                                 TKA(j).Origin = Node))));
+--  (if Connected'Result then
+--                  (for all i in STA'Range =>
+--                    (for some j in G_Marked'Range =>
+--                         STA(i) = G_Marked(j) and G_Marked(j) /= Defualt_Station)));
+--
 
-   procedure Tick (r: in out Railway_Array_Record)
+     procedure Tick (r: in out Railway_Array_Record)
      with
        SPARK_Mode,
        Depends => (r => (r, Defualt_Train)),

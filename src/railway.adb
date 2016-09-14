@@ -12,7 +12,6 @@ is
    begin
       for N of r.STA loop
          if not Connected(r.TKA, r.STA, N) then
-
             return False;
          end if;
          --Put_Line("");
@@ -48,14 +47,16 @@ is
          Stack(S_P) := Node;
          S_P := S_P + 1;
          S_Size := S_Size + 1;
-         pragma Assert (S_P = S_Size + 1);
+         --pragma Loop_Invariant (S_P = S_Size + 1);
+         pragma Assert (S_P -1 = S_Size);
          while S_Size > 0 and S_P > 1 and
            S_Size < Natural'Last and S_P < Positive'Last and
            M_Size < Natural'Last and M_P < Positive'Last and
            S_P in Stack'Range and
            M_P in Marked'Range
          loop
-            --pragma Assert (S_P = S_Size + 1);
+
+            pragma Loop_Invariant (S_P - 1= S_Size);
             Temp := Stack(S_P-1); -- Needs to be this way.
             S_P := S_P - 1;
             S_Size := S_Size - 1;
@@ -72,12 +73,15 @@ is
                   Stack(S_P) := N.Destination;
                   S_P := S_P + 1;
                   S_Size := S_Size + 1;
-                  --pragma Assert (Natural(S_P - 1) = S_Size);
+                  --pragma Loop_Invariant (S_P - 1= S_Size);
+                  pragma Assert (Natural(S_P - 1) = S_Size);
                   Marked(M_P) := N.Destination;
                   M_P := M_P + 1;
                   M_Size := M_Size + 1;
-                  --pragma Assert (N.Origin);
+                  --pragma Loop_Invariant (S_P - 1= S_Size);
+                  pragma Assert (Natural(S_P - 1) = S_Size);
                end if;
+               pragma Loop_Invariant (S_P - 1= S_Size);
             end loop;
          end loop;
          G_Marked := Marked;
@@ -146,7 +150,7 @@ is
       C_TKA := Tracks_Array.First(r.TKA);
       C_STA := Station_Array.First(r.STA);
       C_TNA := Train_Array.First(r.TNA);
-      Put_Line(Tracks_Array.Length(r.TKA)'Image);
+      --Put_Line(Tracks_Array.Length(r.TKA)'Image);
 
       while Tracks_Array.Has_Element(C_TKA) and I_TKA in TKA'Range loop
          TKA(I_TKA) := Tracks_Array.Element(C_TKA);
