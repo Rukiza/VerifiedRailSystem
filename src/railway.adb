@@ -10,6 +10,12 @@ is
      with SPARK_Mode
    is
    begin
+      -- Tracks are not alowed the same section.
+      if (for some i in r.TKA'Range =>
+            (r.TKA(i).Origin = r.TKA(i).Destination)) then
+         return False;
+      end if;
+      -- Checks connectivity.
       for N of r.STA loop
          if not Connected(r.TKA, r.STA, N) then
             return False;
@@ -17,14 +23,81 @@ is
          --Put_Line("");
          pragma Assert (Connected(r.TKA, r.STA, N));
       end loop;
+
+      pragma Assert (for all i in r.TKA'Range =>
+                       (r.TKA(i).Origin /= r.TKA(i).Destination));
+      -- Checks no train is on the same track as another train.
+      for T of r.TNA loop
+         if not Pathed(r.TKA, r.STA, T.Path) then
+            --Put_Line("Should not get here.");
+            return False;
+         end if;
+      end loop;
+
       if (for all i in r.TNA'Range =>
             (for all j in r.TNA'Range =>
                (if r.TNA(i).Current = R.TNA(j).Current then i = j))) then
+
          return True;
       end if;
+
       return False;
    end Verifiy;
 
+   function Pathed (TKA: Tracks_A;
+                    STA: Station_A;
+                    Path: Train.Path_Array) return Boolean
+     with SPARK_Mode
+   is
+      s: Station.Station_Record := Defualt_Station;
+      t: Track.Track_Record := Defualt_Track;
+   begin
+      -- First Path must be a station.
+      if (for some i in STA'Range =>
+            (Path(Path'First)) = STA(i).Station_ID) then
+         for i of STA loop
+            if Path(Path'First) = i.Station_ID then
+               s := i;
+            end if;
+         end loop;
+      else
+         return False;
+      end if;
+      pragma Assert (for some i in STA'Range =>
+            (Path(Path'First)) = STA(i).Station_ID);
+
+      -- Second can be a station or a track.
+      -- Put_Line("Path point to path");
+      for p in Path'First+1..Path'Last loop
+         if (for some i in TKA'Range =>
+               (Path(p) = TKA(i).Track_ID)) then
+            for i in TKA'Range loop
+               if Path(p) = TKA(i).Track_ID then
+                  t := TKA(i);
+                  if t.Origin /= s then
+                     return False;
+                  end if;
+               end if;
+            end loop;
+         elsif (for some i in STA'Range =>
+                  (Path(p) = STA(i).Station_ID)) then
+            for i of STA loop
+               if Path(p) = i.Station_ID then
+                  if i = s then
+                     s := i;
+                  elsif t.Destination = i then
+                     s := i;
+                  else
+                     return False;
+                  end if;
+               end if;
+         end loop;
+         else
+            return false;
+         end if;
+      end loop;
+      return true;
+   end Pathed;
 
    function Connected (TKA: Tracks_A;
                        STA: Station_A;
@@ -90,6 +163,9 @@ is
                    (for some j in Marked'Range =>
                       STA(i) = Marked(j) and Marked(j) /= Defualt_Station));
       end if;
+      --pragma ;
+
+      --Unreachable in the normal running.
       return false;
    end Connected;
 
@@ -123,14 +199,6 @@ is
                            then
                               i = j)));
    end Tick;
-
-   procedure Connect (r: in out Railway_Record;
-                      s1: in Station.Station_Record;
-                      s2: in Station.Station_Record) is
-   begin
-      Tracks_Array.Append(r.TKA, Track.Init_Track_Record(s1, s2));
-      Tracks_Array.Append(r.TKA, Track.Init_Track_Record(s2, s1));
-   end Connect;
 
    function Init return Railway_Record
    is ((Init_Track_Array, Init_Station_Array, Init_Train_Array));

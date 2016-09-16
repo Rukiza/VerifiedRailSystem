@@ -11,132 +11,24 @@ package body Railway_Tests is
 
    procedure Set_Up_Case (T: in out TC) is
       pragma Unreferenced (T);
-      m : Railway.Railway_Record := Railway.Init;
-      s1 : Station.Station_Record;
-      s2 : Station.Station_Record;
-      s3 : Station.Station_Record;
-      t1 : Train.Train_Record;
    begin
-      s1 := Station.Init_Station_Record;
-      s2 := Station.Init_Station_Record;
-      s3 := Station.Init_Station_Record;
-      t1 := Train.Init_Train_Record(s1,
-                                    s1,s2,
-                                    (s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID));
-      Railway.Add_To_Array(m.STA,s1);
-      Railway.Add_To_Array(m.STA,s2);
-      Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
-      Railway.Add_To_Array(m.TNA, t1);
-      --Railway.Init(m);
-      declare
-         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
-      begin
-         null;
-      end ;
-
+      null;
    end Set_Up_Case;
 
 
    procedure Set_Up (T : in out TC) is
-      m : Railway.Railway_Record := Railway.Init;
-      s1 : Station.Station_Record;
-      s2 : Station.Station_Record;
-      s3 : Station.Station_Record;
-      t1 : Train.Train_Record;
    begin
-      s1 := Station.Init_Station_Record;
-      s2 := Station.Init_Station_Record;
-      s3 := Station.Init_Station_Record;
-      t1 := Train.Init_Train_Record(s1,
-                                    s1,s2,
-                                    (s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID));
-      Railway.Add_To_Array(m.STA,s1);
-      Railway.Add_To_Array(m.STA,s2);
-      Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
-      Railway.Add_To_Array(m.TNA, t1);
-      declare
-         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
-      begin
-         null;
-      end ;
+      null;
    end;
 
    procedure Tear_Down (T : in out TC) is
-      m : Railway.Railway_Record := Railway.Init;
-      s1 : Station.Station_Record;
-      s2 : Station.Station_Record;
-      s3 : Station.Station_Record;
-      t1 : Train.Train_Record;
    begin
-      s1 := Station.Init_Station_Record;
-      s2 := Station.Init_Station_Record;
-      s3 := Station.Init_Station_Record;
-      t1 := Train.Init_Train_Record(s1,
-                                    s1,s2,
-                                    (s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID));
-      Railway.Add_To_Array(m.STA,s1);
-      Railway.Add_To_Array(m.STA,s2);
-      Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
-      Railway.Add_To_Array(m.TNA, t1);
-      declare
-         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
-      begin
-         null;
-      end ;
+      null;
    end;
 
    procedure Tear_Down_Case (T : in out TC) is
-      m : Railway.Railway_Record := Railway.Init;
-      s1 : Station.Station_Record;
-      s2 : Station.Station_Record;
-      s3 : Station.Station_Record;
-      t1 : Train.Train_Record;
    begin
-      s1 := Station.Init_Station_Record;
-      s2 := Station.Init_Station_Record;
-      s3 := Station.Init_Station_Record;
-      t1 := Train.Init_Train_Record(s1,
-                                    s1,s2,
-                                    (s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID));
-      Railway.Add_To_Array(m.STA,s1);
-      Railway.Add_To_Array(m.STA,s2);
-      Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
-      Railway.Add_To_Array(m.TNA, t1);
-      declare
-         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
-      begin
-         null;
-      end ;
-      --l :=
-
+      null;
    end;
 
    --==========================================================
@@ -163,23 +55,35 @@ package body Railway_Tests is
       s2 : Station.Station_Record;
       s3 : Station.Station_Record;
       t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
    begin
       s1 := Station.Init_Station_Record;
       s2 := Station.Init_Station_Record;
       s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
       t1 := Train.Init_Train_Record(s1,
-                                    s1,s2,
+                                    s1,
+                                    s2,
                                     (s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID));
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     s2.Station_ID,
+                                     s2.Station_ID,
+                                     s2.Station_ID),
+                                    true);
       Railway.Add_To_Array(m.STA,s1);
       Railway.Add_To_Array(m.STA,s2);
       Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
       Railway.Add_To_Array(m.TNA, t1);
       --Railway.Init(m);
       declare
@@ -198,27 +102,33 @@ package body Railway_Tests is
       s2 : Station.Station_Record;
       s3 : Station.Station_Record;
       t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
    begin
       s1 := Station.Init_Station_Record;
       s2 := Station.Init_Station_Record;
       s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
       t1 := Train.Init_Train_Record(s1,
                                     s1,
                                     s2,
                                     (s1.Station_ID,
+                                     tr1.Track_ID,
                                      s2.Station_ID,
-                                     s3.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID,
-                                     s1.Station_ID));
+                                     s2.Station_ID,
+                                     s2.Station_ID,
+                                     s2.Station_ID),
+                                    true);
       Railway.Add_To_Array(m.STA,s1);
       Railway.Add_To_Array(m.STA,s2);
       Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      --Railway.Connect(m,s2,s3);
-      Railway.Add_To_Array(m.TKA, (Track.Init_Track_Record(s2,s3)));
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
       Railway.Add_To_Array(m.TNA, t1);
-      --Railway.Init(m);
       declare
          l : Railway.Railway_Array_Record := Railway.Init_Record(m);
       begin
@@ -236,33 +146,45 @@ package body Railway_Tests is
       s3 : Station.Station_Record;
       t1 : Train.Train_Record;
       t2 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
    begin
       s1 := Station.Init_Station_Record;
       s2 := Station.Init_Station_Record;
       s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
       t1 := Train.Init_Train_Record(s1,
                                     s1,
-                                    s1,
+                                    s3,
                                     (s1.Station_ID,
+                                     tr1.Track_ID,
                                      s2.Station_ID,
+                                     tr3.Track_ID,
                                      s3.Station_ID,
-                                     s3.Station_ID,
-                                     s2.Station_ID,
-                                     s1.Station_ID));
+                                     s3.Station_ID),
+                                    true);
       t2 := Train.Init_Train_Record(s1,
                                     s1,
-                                    s1,
+                                    s3,
                                     (s1.Station_ID,
+                                     tr1.Track_ID,
                                      s2.Station_ID,
+                                     tr3.Track_ID,
                                      s3.Station_ID,
-                                     s3.Station_ID,
-                                     s2.Station_ID,
-                                     s1.Station_ID));
+                                     s3.Station_ID),
+                                    true);
       Railway.Add_To_Array(m.STA,s1);
       Railway.Add_To_Array(m.STA,s2);
       Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
       Railway.Add_To_Array(m.TNA, t1);
       Railway.Add_To_Array(m.TNA, t2);
       --Railway.Init(m);
@@ -276,30 +198,324 @@ package body Railway_Tests is
       end ;
    end Verify_3;
 
+   procedure Verify_4 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
+      m : Railway.Railway_Record := Railway.Init;
+      s1 : Station.Station_Record;
+      s2 : Station.Station_Record;
+      s3 : Station.Station_Record;
+      t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
+   begin
+      s1 := Station.Init_Station_Record;
+      s2 := Station.Init_Station_Record;
+      s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
+      t1 := Train.Init_Train_Record(s1,
+                                    s1,
+                                    s3,
+                                    (s1.Station_ID,
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     tr3.Track_ID,
+                                     s3.Station_ID,
+                                     s3.Station_ID),
+                                    true);
+      Railway.Add_To_Array(m.STA,s1);
+      Railway.Add_To_Array(m.STA,s2);
+      Railway.Add_To_Array(m.STA,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
+      Railway.Add_To_Array(m.TNA, t1);
+      --Railway.Init(m);
+      declare
+         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
+      begin
+
+         Assert (Condition => (Railway.Verifiy(l)),
+                 Message => "Input should verifyable and Tick");
+
+      end ;
+   end Verify_4;
+
+   procedure Verify_5 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
+      m : Railway.Railway_Record := Railway.Init;
+      s1 : Station.Station_Record;
+      s2 : Station.Station_Record;
+      s3 : Station.Station_Record;
+      t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
+   begin
+      s1 := Station.Init_Station_Record;
+      s2 := Station.Init_Station_Record;
+      s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
+      tr4 := Track.Init_Track_Record(s3,s3);
+      t1 := Train.Init_Train_Record(s1,
+                                    s1,
+                                    s3,
+                                    (s1.Station_ID,
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     tr3.Track_ID,
+                                     s3.Station_ID,
+                                     s3.Station_ID),
+                                    true);
+      Railway.Add_To_Array(m.STA,s1);
+      Railway.Add_To_Array(m.STA,s2);
+      Railway.Add_To_Array(m.STA,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
+      Railway.Add_To_Array(m.TNA, t1);
+      --Railway.Init(m);
+      declare
+         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
+      begin
+
+         Assert (Condition => (not Railway.Verifiy(l)),
+                 Message => "Input should verifyable and Tick");
+
+      end ;
+   end Verify_5;
+
+   procedure Verify_6 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
+      m : Railway.Railway_Record := Railway.Init;
+      s1 : Station.Station_Record;
+      s2 : Station.Station_Record;
+      s3 : Station.Station_Record;
+      t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
+   begin
+      s1 := Station.Init_Station_Record;
+      s2 := Station.Init_Station_Record;
+      s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
+      t1 := Train.Init_Train_Record(s1,
+                                    s1,
+                                    s3,
+                                    (s1.Station_ID,
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     s3.Station_ID,
+                                     s3.Station_ID,
+                                     s3.Station_ID),
+                                    true);
+      Railway.Add_To_Array(m.STA,s1);
+      Railway.Add_To_Array(m.STA,s2);
+      Railway.Add_To_Array(m.STA,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
+      Railway.Add_To_Array(m.TNA, t1);
+      --Railway.Init(m);
+      declare
+         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
+      begin
+
+         Assert (Condition => (not Railway.Verifiy(l)),
+                 Message => "Input should verifyable and Tick");
+
+      end ;
+   end Verify_6;
+
+   procedure Pathed_1 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
+      m : Railway.Railway_Record := Railway.Init;
+      s1 : Station.Station_Record;
+      s2 : Station.Station_Record;
+      s3 : Station.Station_Record;
+      t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
+   begin
+      s1 := Station.Init_Station_Record;
+      s2 := Station.Init_Station_Record;
+      s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
+      t1 := Train.Init_Train_Record(s1,
+                                    s1,
+                                    s3,
+                                    (tr1.Track_ID,
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     s3.Station_ID,
+                                     s3.Station_ID,
+                                     s3.Station_ID),
+                                    true);
+      Railway.Add_To_Array(m.STA,s1);
+      Railway.Add_To_Array(m.STA,s2);
+      Railway.Add_To_Array(m.STA,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
+      Railway.Add_To_Array(m.TNA, t1);
+      --Railway.Init(m);
+      declare
+         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
+      begin
+
+         Assert (Condition => (not Railway.Verifiy(l)),
+                 Message => "Input should verifyable and Tick");
+
+      end ;
+   end Pathed_1;
+
+   procedure Pathed_2 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
+      m : Railway.Railway_Record := Railway.Init;
+      s1 : Station.Station_Record;
+      s2 : Station.Station_Record;
+      s3 : Station.Station_Record;
+      t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
+   begin
+      s1 := Station.Init_Station_Record;
+      s2 := Station.Init_Station_Record;
+      s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
+      t1 := Train.Init_Train_Record(s1,
+                                    s1,
+                                    s3,
+                                    (s1.Station_ID,
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     tr4.Track_ID,
+                                     s3.Station_ID,
+                                     s3.Station_ID),
+                                    true);
+      Railway.Add_To_Array(m.STA,s1);
+      Railway.Add_To_Array(m.STA,s2);
+      Railway.Add_To_Array(m.STA,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
+      Railway.Add_To_Array(m.TNA, t1);
+      --Railway.Init(m);
+      declare
+         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
+      begin
+
+         Assert (Condition => (not Railway.Verifiy(l)),
+                 Message => "Input should verifyable and Tick");
+
+      end ;
+   end Pathed_2;
+
+   procedure Pathed_3 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
+      m : Railway.Railway_Record := Railway.Init;
+      s1 : Station.Station_Record;
+      s2 : Station.Station_Record;
+      s3 : Station.Station_Record;
+      t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
+   begin
+      s1 := Station.Init_Station_Record;
+      s2 := Station.Init_Station_Record;
+      s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
+      t1 := Train.Init_Train_Record(s1,
+                                    s1,
+                                    s3,
+                                    (s1.Station_ID,
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     ID'Last,
+                                     s3.Station_ID,
+                                     s3.Station_ID),
+                                    true);
+      Railway.Add_To_Array(m.STA,s1);
+      Railway.Add_To_Array(m.STA,s2);
+      Railway.Add_To_Array(m.STA,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
+      Railway.Add_To_Array(m.TNA, t1);
+      --Railway.Init(m);
+      declare
+         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
+      begin
+
+         Assert (Condition => (not Railway.Verifiy(l)),
+                 Message => "Input should verifyable and Tick");
+
+      end ;
+   end Pathed_3;
+
    procedure Tick_1 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
       m : Railway.Railway_Record := Railway.Init;
       s1 : Station.Station_Record;
       s2 : Station.Station_Record;
       s3 : Station.Station_Record;
       t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
    begin
       s1 := Station.Init_Station_Record;
       s2 := Station.Init_Station_Record;
       s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
       t1 := Train.Init_Train_Record(s1,
                                     s1,
-                                    s1,
+                                    s3,
                                     (s1.Station_ID,
+                                     tr1.Track_ID,
                                      s2.Station_ID,
+                                     tr3.Track_ID,
                                      s3.Station_ID,
-                                     s3.Station_ID,
-                                     s2.Station_ID,
-                                     s1.Station_ID));
+                                     s3.Station_ID),
+                                    true);
       Railway.Add_To_Array(m.STA,s1);
       Railway.Add_To_Array(m.STA,s2);
       Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
       Railway.Add_To_Array(m.TNA, t1);
       --Railway.Init(m);
       declare
@@ -309,7 +525,7 @@ package body Railway_Tests is
             Assert (Condition => ( l.TNA(1).Current = s1.Station_ID ),
                  Message => "Input should not have moved yet.");
             Railway.Tick(l);
-            Assert (Condition => ( l.TNA(1).Current = s2.Station_ID ),
+            Assert (Condition => ( l.TNA(1).Current = tr1.Track_ID),
                  Message => "Input should have moved after Tick");
          else
             Assert (Condition => ( false ),
@@ -327,24 +543,35 @@ package body Railway_Tests is
       s2 : Station.Station_Record;
       s3 : Station.Station_Record;
       t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
    begin
       s1 := Station.Init_Station_Record;
       s2 := Station.Init_Station_Record;
       s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
       t1 := Train.Init_Train_Record(s1,
                                     s1,
-                                    s1,
+                                    s3,
                                     (s1.Station_ID,
+                                     tr1.Track_ID,
                                      s2.Station_ID,
+                                     tr3.Track_ID,
                                      s3.Station_ID,
-                                     s3.Station_ID,
-                                     s2.Station_ID,
-                                     s1.Station_ID));
+                                     s3.Station_ID),
+                                    true);
       Railway.Add_To_Array(m.STA,s1);
       Railway.Add_To_Array(m.STA,s2);
       Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
       Railway.Add_To_Array(m.TNA, t1);
       --Railway.Init(m);
       declare
@@ -354,19 +581,19 @@ package body Railway_Tests is
             Assert (Condition => ( l.TNA(1).Current = s1.Station_ID ),
                  Message => "Input should not have moved yet.");
             Railway.Tick(l);
+            Assert (Condition => ( l.TNA(1).Current = tr1.Track_ID ),
+                    Message => "Input should have moved after Tick");
+            Railway.Tick(l);
             Assert (Condition => ( l.TNA(1).Current = s2.Station_ID ),
+                    Message => "Input should have moved after Tick");
+            Railway.Tick(l);
+            Assert (Condition => ( l.TNA(1).Current = tr3.Track_ID ),
                     Message => "Input should have moved after Tick");
             Railway.Tick(l);
             Assert (Condition => ( l.TNA(1).Current = s3.Station_ID ),
                     Message => "Input should have moved after Tick");
             Railway.Tick(l);
             Assert (Condition => ( l.TNA(1).Current = s3.Station_ID ),
-                    Message => "Input should have moved after Tick");
-            Railway.Tick(l);
-            Assert (Condition => ( l.TNA(1).Current = s2.Station_ID ),
-                    Message => "Input should have moved after Tick");
-            Railway.Tick(l);
-            Assert (Condition => ( l.TNA(1).Current = s1.Station_ID ),
                     Message => "Input should have moved after Tick");
          else
             Assert (Condition => ( false ),
@@ -383,19 +610,28 @@ package body Railway_Tests is
       s3 : Station.Station_Record;
       t1 : Train.Train_Record;
       t2 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
    begin
       s1 := Station.Init_Station_Record;
       s2 := Station.Init_Station_Record;
       s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
       t1 := Train.Init_Train_Record(s1,
                                     s1,
-                                    s1,
+                                    s3,
                                     (s1.Station_ID,
+                                     tr1.Track_ID,
                                      s2.Station_ID,
+                                     tr3.Track_ID,
                                      s3.Station_ID,
-                                     s3.Station_ID,
-                                     s2.Station_ID,
-                                     s1.Station_ID));
+                                     s3.Station_ID),
+                                    true);
       t2 := Train.Init_Train_Record(s2,
                                     s2,
                                     s2,
@@ -404,12 +640,15 @@ package body Railway_Tests is
                                      s2.Station_ID,
                                      s2.Station_ID,
                                      s2.Station_ID,
-                                     s2.Station_ID));
+                                     s2.Station_ID),
+                                    true);
       Railway.Add_To_Array(m.STA,s1);
       Railway.Add_To_Array(m.STA,s2);
       Railway.Add_To_Array(m.STA,s3);
-      Railway.Connect(m,s1,s2);
-      Railway.Connect(m,s2,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
       Railway.Add_To_Array(m.TNA, t1);
       Railway.Add_To_Array(m.TNA, t2);
       --Railway.Init(m);
@@ -420,10 +659,10 @@ package body Railway_Tests is
             Assert (Condition => ( l.TNA(1).Current = s1.Station_ID ),
                  Message => "Input should not have moved yet.");
             Railway.Tick(l);
-            Assert (Condition => ( l.TNA(1).Current = s1.Station_ID ),
+            Assert (Condition => ( l.TNA(1).Current = tr1.Track_ID ),
                     Message => "Input should not have moved after Tick");
             Railway.Tick(l);
-            Assert (Condition => ( l.TNA(1).Current = s1.Station_ID ),
+            Assert (Condition => ( l.TNA(1).Current = tr1.Track_ID ),
                     Message => "Input should not have moved after Tick");
          else
             Assert (Condition => ( false ),
@@ -449,6 +688,24 @@ package body Railway_Tests is
       Register_Routine (Test => T,
                         Routine => Verify_3'Access,
                         Name => "Verify 3");
+      Register_Routine (Test => T,
+                        Routine => Verify_4'Access,
+                        Name => "Verify 4");
+      Register_Routine (Test => T,
+                        Routine => Verify_5'Access,
+                        Name => "Verify 5");
+      Register_Routine (Test => T,
+                        Routine => Verify_6'Access,
+                        Name => "Verify 6");
+      Register_Routine (Test => T,
+                        Routine => Pathed_1'Access,
+                        Name => "Pathed 1");
+      Register_Routine (Test => T,
+                        Routine => Pathed_2'Access,
+                        Name => "Pathed 2");
+      Register_Routine (Test => T,
+                        Routine => Pathed_3'Access,
+                        Name => "Pathed 3");
       Register_Routine (Test => T,
                         Routine => Tick_1'Access,
                         Name => "Tick_1");

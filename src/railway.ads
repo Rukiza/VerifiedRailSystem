@@ -24,7 +24,11 @@ is
                                          Defualt_Station,
                                          Defualt_Station,
                                          Defualt_Path_Array,
-                                         Defualt_Path_Array'Last);
+                                         Defualt_Path_Array'Last,
+                                         True);
+   Defualt_Track: Track.Track_Record := (ID'Last,
+                                         Defualt_Station,
+                                         Defualt_Station);
 
    type Tracks_A is array (Positive range <>) of Track.Track_Record;
    type Station_A is array (Positive range <>) of Station.Station_Record;
@@ -52,14 +56,33 @@ is
    function Verifiy (r: in Railway_Array_Record) return Boolean
      with
        SPARK_Mode => On,
-       Depends => (Verifiy'Result => (r,Defualt_Station)),
+       Depends => (Verifiy'Result => (r,Defualt_Station, Defualt_Track)),
    --Pre => ( Assumes nothing it true ),
      Post => (if Verifiy'Result
-                then (for all i in r.TNA'Range =>
-                          (for all j in r.TNA'Range =>
-                               (if r.TNA(i).Current = r.TNA(j).Current
-                                      then
-                                        i = j))));
+        then (for all i in r.TNA'Range =>
+                  (for all j in r.TNA'Range =>
+                       (if r.TNA(i).Current = r.TNA(j).Current
+                              then
+                                i = j))) and
+             (for all i in r.TKA'Range =>
+                (r.TKA(i).Origin /= r.TKA(i).Destination)));
+
+   function Pathed (TKA: Tracks_A;
+                    STA: Station_A;
+                    Path: Train.Path_Array) return Boolean
+     with SPARK_Mode,
+     Depends => (Pathed'Result => (TKA,
+                                   STA,
+                                   Path,
+                                   Defualt_Station,
+                                   Defualt_Track)),
+     --Pre => (),
+     Post => (if Pathed'Result then
+                (for all i in Path'Range =>
+                     (for some j in STA'Range =>
+                          (Path(i) = STA(j).Station_ID) xor
+                        (for some j in TKA'Range =>
+                           (Path(i) = TKA(j).Track_ID)))));
 
    function Connected (TKA: Tracks_A;
                        STA: Station_A;
@@ -93,11 +116,6 @@ is
                           (if r.TNA(i).Current = r.TNA(j).Current
                                then
                                  i = j)));
-
-   procedure Connect (r: in out Railway_Record;
-                      s1: in Station.Station_Record;
-                      s2: in Station.Station_Record);
-
 
    --INISILIZATION
 
