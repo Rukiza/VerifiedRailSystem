@@ -48,6 +48,54 @@ package body Railway_Tests is
    -- ===========================================================
    --                 TEST CASES/SCENARIOS
    -- ===========================================================
+procedure Verify_Train_1 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
+      m : Railway.Railway_Record := Railway.Init;
+      s1 : Station.Station_Record;
+      s2 : Station.Station_Record;
+      s3 : Station.Station_Record;
+      t1 : Train.Train_Record;
+      tr1 : Track.Track_Record;
+      tr2 : Track.Track_Record;
+      tr3 : Track.Track_Record;
+      tr4 : Track.Track_Record;
+   begin
+      s1 := Station.Init_Station_Record;
+      s2 := Station.Init_Station_Record;
+      s3 := Station.Init_Station_Record;
+      tr1 := Track.Init_Track_Record(s1,s2);
+      tr2 := Track.Init_Track_Record(s2,s1);
+      tr3 := Track.Init_Track_Record(s2,s3);
+      tr4 := Track.Init_Track_Record(s3,s2);
+      t1 := Train.Init_Train_Record(s1,
+                                    s1,
+                                    s2,
+                                    (s1.Station_ID,
+                                     tr1.Track_ID,
+                                     s2.Station_ID,
+                                     s2.Station_ID,
+                                     s2.Station_ID,
+                                     s2.Station_ID),
+                                    true);
+      Railway.Add_To_Array(m.STA,s1);
+      Railway.Add_To_Array(m.STA,s2);
+      Railway.Add_To_Array(m.STA,s3);
+      Railway.Add_To_Array(m.TKA, tr1);
+      Railway.Add_To_Array(m.TKA, tr2);
+      Railway.Add_To_Array(m.TKA, tr3);
+      Railway.Add_To_Array(m.TKA, tr4);
+      Railway.Add_To_Array(m.TNA, t1);
+      --Railway.Init(m);
+      declare
+         l : Railway.Railway_Array_Record := Railway.Init_Record(m);
+      begin
+         Assert (Condition => (Railway.Verifiy_Train(l)),
+                 Message => "Input should verifyable and Tick");
+
+         Assert (Condition => (Railway.Verifiy(l)),
+                 Message => "Input should be verifyable");
+      end;
+   end Verify_Train_1;
+
 
    procedure Verify_1 (CWTC : in out AUnit.Test_Cases.Test_Case'Class) is
       m : Railway.Railway_Record := Railway.Init;
@@ -238,7 +286,8 @@ package body Railway_Tests is
       declare
          l : Railway.Railway_Array_Record := Railway.Init_Record(m);
       begin
-
+         Assert (Condition => (Railway.Verifiy_Train(l)),
+                 Message => "Input should verifyable and Tick");
          Assert (Condition => (Railway.Verifiy(l)),
                  Message => "Input should verifyable and Tick");
 
@@ -679,6 +728,9 @@ package body Railway_Tests is
    procedure Register_Tests (T: in out TC) is
       use AUnit.Test_Cases.Registration;
    begin
+      Register_Routine (Test => T,
+                        Routine => Verify_Train_1'Access,
+                        Name => "Verify Train 1");
       Register_Routine (Test => T,
                         Routine => Verify_1'Access,
                         Name => "Verify 1");

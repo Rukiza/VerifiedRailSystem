@@ -27,10 +27,4 @@ is
                                path: Train.Path_Array;
                                on_track: Boolean) return Train_Record;
 
-   function Init_Train_Record (t: Track_Record;
-                               origin: Station_Record;
-                               destination: Station_Record;
-                               path: Train.Path_Array;
-                               on_track: Boolean) return Train_Record;
-
 end Train;

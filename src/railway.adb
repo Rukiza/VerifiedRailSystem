@@ -5,16 +5,34 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body Railway
 --with SPARK_Mode => On
 is
+   function Verifiy_Train (r: in Railway_Array_Record) return Boolean
+     with
+       SPARK_Mode
+   is
+   begin
+      -- Ensures that current is appropreately places
+      if (for some i in r.TNA'Range =>
+            (r.TNA(i).Current /= r.TNA(i).Origin.Station_ID or
+                 r.TNA(i).Current
+             /= r.TNA(i).Path(r.TNA(i).Path'First) or
+                 r.TNA(i).Origin.Station_ID
+             /= r.TNA(i).Path(r.TNA(i).Path'First))) then
+         return False;
+      end if;
+      return True;
+   end Verifiy_Train;
 
    function Verifiy (r: in Railway_Array_Record) return Boolean
      with SPARK_Mode
    is
    begin
+
       -- Tracks are not alowed the same section.
       if (for some i in r.TKA'Range =>
             (r.TKA(i).Origin = r.TKA(i).Destination)) then
          return False;
       end if;
+
       -- Checks connectivity.
       for N of r.STA loop
          if not Connected(r.TKA, r.STA, N) then

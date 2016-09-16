@@ -52,6 +52,18 @@ is
          TNA: Train_Array.Vector;
       end record;
 
+   function Verifiy_Train (r: in Railway_Array_Record) return Boolean
+     with
+       SPARK_Mode,
+       Depends => (Verifiy_Train'Result => (r)),
+       Post => (if not Verifiy_Train'Result then
+                  (for some i in r.TNA'Range =>
+                     (r.TNA(i).Current /= r.TNA(i).Origin.Station_ID or
+                          r.TNA(i).Current
+                      /= r.TNA(i).Path(r.TNA(i).Path'First) or
+                          r.TNA(i).Origin.Station_ID
+                      /= r.TNA(i).Path(r.TNA(i).Path'First))));
+
    --Checks all nodes are connected.
    function Verifiy (r: in Railway_Array_Record) return Boolean
      with
